@@ -1,9 +1,9 @@
 <?php
 
-require_once 'db.php';
+require_once 'db.php'; //Импорт файла настроенный на бд
 
-$stmt = $pdo->query("SELECT * FROM tasks ORDER BY id DESC");
-$tasks = $stmt->fetchALL();
+$stmt = $pdo->query("SELECT * FROM tasks ORDER BY id DESC"); //Запрос и сортировка по убыванию
+$tasks = $stmt->fetchALL(); //Превращение данных в понятный массив
 
 ?>
 
@@ -12,7 +12,9 @@ $tasks = $stmt->fetchALL();
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Чтобы на старом Internet Explorer сайт работал нормально -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Подстраивает размер если сайт открылся на телефоне -->
     <title>Мой список задач</title>
     <style>
         body {font-family: sans-serif; background: #f4f4f4; padding: 20px;}
@@ -27,6 +29,7 @@ $tasks = $stmt->fetchALL();
         <div class="task-card">
             <h3><?= htmlspecialchars($task['title']) ?></h3>
             <p class="status">Статус: <?= htmlspecialchars($task['status']) ?></p>
+            <!-- Отобажает для html наименование и статус -->
         </div>
     <?php endforeach; ?>
 
