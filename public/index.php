@@ -18,7 +18,7 @@ $tasks = $stmt->fetchAll(); //Превращение данных в понят�
     <title>Мой список задач</title>
     <style>
         body {font-family: sans-serif; background: #f4f4f4; padding: 20px;}
-        .task_card {background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
+        .task-card {background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
         .status {color: #888; font-size: 0.9em;}
     </style>
 </head>
@@ -37,6 +37,7 @@ $tasks = $stmt->fetchAll(); //Превращение данных в понят�
             <p class="status">Статус: <?= htmlspecialchars($task['status']) ?></p>
             <!-- Отобажает для html наименование и статус -->
             <a href="delete.php?id=<?= $task['id'] ?>" style="color: red;">Удалить</a>
+            <a href="update.php?id=<?= $task['id'] ?>" style="color: blue;">Изменить</a>
         </div>
     <?php endforeach; ?>
 
