@@ -36,6 +36,7 @@ $tasks = $stmt->fetchAll(); //Превращение данных в понят�
             <h3><?= htmlspecialchars($task['title']) ?></h3>
             <p class="status">Статус: <?= htmlspecialchars($task['status']) ?></p>
             <!-- Отобажает для html наименование и статус -->
+            <a href="delete.php?id=<?= $task['id'] ?>" style="color: red;">Удалить</a>
         </div>
     <?php endforeach; ?>
 
