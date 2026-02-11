@@ -1,5 +1,11 @@
 <?php
 
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
 require_once 'db.php'; //Импорт файла настроенный на бд
 
 $stmt = $pdo->query("SELECT * FROM tasks ORDER BY id DESC"); //Запрос и сортировка по убыванию
@@ -23,6 +29,7 @@ $tasks = $stmt->fetchAll(); //Превращение данных в понят�
     </style>
 </head>
 <body>
+    <h3>Вы вошли как <?= $_SESSION['login'] ?></h3>
     <h1>Список дел от куратора</h1>
 
     <form action="add.php" method="POST" style="margin-bottom: 20px">
