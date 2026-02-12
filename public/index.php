@@ -8,7 +8,9 @@ if (!isset($_SESSION['user_id'])) {
 
 require_once 'db.php'; //Импорт файла настроенный на бд
 
-$stmt = $pdo->query("SELECT * FROM tasks ORDER BY id DESC"); //Запрос и сортировка по убыванию
+$sql = "SELECT * FROM tasks WHERE user_id = ?";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$_SESSION['user_id']]);
 $tasks = $stmt->fetchAll(); //Превращение данных в понятный массив
 
 ?>
