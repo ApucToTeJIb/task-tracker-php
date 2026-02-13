@@ -1,5 +1,6 @@
 <?php
 
+session_start(); //Привязка к сессии
 require_once 'db.php'; //Настройка на бд
 
 if (isset($_POST['title']) && !empty($_POST['title'])) { //Проверка не пустое ли поле

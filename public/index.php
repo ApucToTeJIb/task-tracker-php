@@ -1,14 +1,14 @@
 <?php
 
-session_start();
+session_start(); //Привязка к сессии
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+    header('Location: login.php'); //Перекидывание на login.php если не залогинен
     exit;
 }
 
 require_once 'db.php'; //Импорт файла настроенный на бд
 
-$sql = "SELECT * FROM tasks WHERE user_id = ?";
+$sql = "SELECT * FROM tasks WHERE user_id = ? ORDER BY id DESC";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$_SESSION['user_id']]);
 $tasks = $stmt->fetchAll(); //Превращение данных в понятный массив
@@ -46,7 +46,7 @@ $tasks = $stmt->fetchAll(); //Превращение данных в понят�
             <p class="status">Статус: <?= htmlspecialchars($task['status']) ?></p>
             <!-- Отобажает для html наименование и статус -->
             <a href="delete.php?id=<?= $task['id'] ?>" style="color: red;">Удалить</a>
-            <a href="update.php?id=<?= $task['id'] ?>" style="color: blue;">Изменить</a>
+            <a href="edit.php?id=<?= $task['id'] ?>" style="color: blue;">Изменить</a>
             <!-- Кнопки для удаления и изменения -->
         </div>
     <?php endforeach; ?>

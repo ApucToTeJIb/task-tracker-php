@@ -31,6 +31,8 @@ if ($_SERVER['REQUEST_METHOD']=== 'POST') { //Используем из масс
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Чтобы на старом Internet Explorer сайт работал нормально -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вход в систему</title>
 </head>

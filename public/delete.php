@@ -1,5 +1,6 @@
 <?php
 
+session_start(); //Привязка к сессии
 require_once 'db.php'; //Настройка к бд
 
 if(isset($_GET['id'])) { //Проверка параметра id
