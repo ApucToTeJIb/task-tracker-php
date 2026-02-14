@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: MySQL-8.0:3306
--- Время создания: Фев 11 2026 г., 16:58
+-- Время создания: Фев 14 2026 г., 22:17
 -- Версия сервера: 8.0.44
 -- Версия PHP: 8.3.29
 
@@ -31,7 +31,12 @@ CREATE TABLE `tasks` (
   `id` int NOT NULL,
   `title` varchar(255) NOT NULL,
   `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'В процессе',
-  `user_id` int DEFAULT NULL
+  `user_id` int DEFAULT NULL,
+  `executor_id` int DEFAULT NULL,
+  `author_id` int DEFAULT NULL,
+  `description` text,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -44,7 +49,7 @@ CREATE TABLE `users` (
   `id` int NOT NULL,
   `login` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `role` enum('user','admin','curator') DEFAULT 'user'
+  `role` enum('admin','manager','guest') DEFAULT 'guest'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -79,7 +84,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT для таблицы `users`

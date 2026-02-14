@@ -9,6 +9,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') { //Подтверждение POST м
     $status = $_POST['status']; //Так же
     $user_id = $_SESSION['user_id']; //Так же но из SESSION для подтверждения пользователя
 
+    if (empty(trim($title))) {
+        $_SESSION['error'] = "Название задачи не может быть пустым";
+        header('Location: index.php');
+        exit;
+    }
+
     $sql = "UPDATE tasks SET title = ?, status = ? WHERE id = ? AND user_id = ?"; //Текст для обращения к бд с просьбой обновления статуса и проверки id и user_id
     $stmt = $pdo->prepare($sql); //Подготовка
     $stmt->execute([$title, $status, $id, $user_id]); //Выполнение

@@ -8,11 +8,29 @@ if (!isset($_SESSION['user_id'])) {
 
 require_once 'db.php'; //Импорт файла настроенный на бд
 
-$sql = "SELECT * FROM tasks WHERE user_id = ? ORDER BY id DESC";
-$stmt = $pdo->prepare($sql);
-$stmt->execute([$_SESSION['user_id']]);
+if ($_SESSION['role'] === 'admin') { //Если залогинился админ
+    $sql = "SELECT * FROM tasks ORDER BY id DESC";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+} elseif ($_SESSION['role'] === 'manager') { //Если залогинился менеджер
+    $sql = "SELECT * FROM tasks WHERE author_id = ? ORDER BY id DESC";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$_SESSION['user_id']]);
+} else { //Если залогинился гость
+    $sql = "SELECT * FROM tasks WHERE executor_id = ? ORDER BY id DESC";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$_SESSION['user_id']]);
+}
 $tasks = $stmt->fetchAll(); //Превращение данных в понятный массив
 
+$tasksByStatus = [
+    'Новая' => [],
+    'В процессе' => [],
+    'Выполнено' => []
+];
+foreach ($tasks as $task) {
+    $tasksByStatus[$task['status']][] = $task;
+}
 ?>
 
 <!DOCTYPE html>
@@ -40,16 +58,26 @@ $tasks = $stmt->fetchAll(); //Превращение данных в понят�
         <button type="submit">Добавить задачу</button>
     </form>
 
-    <?php foreach ($tasks as $task): ?>
-        <div class="task-card">
-            <h3><?= htmlspecialchars($task['title']) ?></h3>
-            <p class="status">Статус: <?= htmlspecialchars($task['status']) ?></p>
-            <!-- Отобажает для html наименование и статус -->
-            <a href="delete.php?id=<?= $task['id'] ?>" style="color: red;">Удалить</a>
-            <a href="edit.php?id=<?= $task['id'] ?>" style="color: blue;">Изменить</a>
-            <!-- Кнопки для удаления и изменения -->
-        </div>
-    <?php endforeach; ?>
+    <div style="display: flex; gap: 20px;">
+        <?php foreach ($tasksByStatus as $status => $statusTasks): ?>
+            <div style="flex: 1; background: #e9ecef; padding: 15px; border-radius: 8px;">
+                <h2><?= $status ?></h2>
+                <?php foreach ($statusTasks as $task): ?>
+                    <div class="task-card">
+                        <h3><?= htmlspecialchars($task['title']) ?></h3>
+                        <p><?= htmlspecialchars($task['description'] ?? '') ?></p>
+                        <p class="status">Автор: <?= $task['author_id'] ?></p>
+                        <p class="status">Исполнитель: <?= $task['executor_id'] ?></p>
+
+                        <?php if ($_SESSION['role'] === 'admin' || ($_SESSION['role'] === 'manager' && $task['author_id'] == $_SESSION['user_id'])): ?>
+                            <a href="delete.php?id=<?= $task['id'] ?>">Удалить</a>
+                            <a href="edit.php?id=<?= $task['id'] ?>">Изменить</a>
+                        <?php endif; ?>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endforeach; ?>
+    </div>
 
 </body>
 </html>
