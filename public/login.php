@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD']=== 'POST') { //Используем из масс
 <body>
     <h2>Авторизация</h2>
 
-    <?php if(isset($error)): ?>
+    <?php if (isset($error)): ?>
         <p style="color: red;"><?= $error ?></p>
     <?php endif; ?>
 

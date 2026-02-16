@@ -10,16 +10,24 @@ if (!isset($_SESSION['user_id'])) {
 
 $task = null;
 
-if(isset($_GET['id'])) {
-    $id = (int)$_GET['id'];
-    $sql = "SELECT * FROM tasks WHERE id = ? AND user_id = ?";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$id, $_SESSION['user_id']]);
-    $task = $stmt->fetch();
+if (isset($_GET['id'])) { //Получение id задачи которое собирается редактировать пользователь
+    $id = (int)$_GET['id']; //Кладем id в переменную $id для дальнейшей проверки айди в бд и превращение в цифровой тип данных
+    $sql = "SELECT * FROM tasks WHERE id = ?"; //Команда для отправки на бд
+    $stmt = $pdo->prepare($sql); //Подготовка команды с защитой prepare execute
+    $stmt->execute([$id]); //Отправка $id для получения соответствующего id с бд через SELECT
+    $task = $stmt->fetch(); //Получение через fetch и присваивание строк к $task
 
-    if(!$task){
-        die("Ошибка: Задача не найдена или у вас нет прав доступа.");
-    } 
+    if (!$task){
+        die("Ошибка: Задача не найдена");
+    }
+    
+    if ($_SESSION['role'] === 'guest') {
+        die("Гости не могут редактировать задачи!");
+    } //На случай если гость попытаеся изменить задачу
+
+    if ($_SESSION['role'] === 'manager' && $task['author_id'] != $_SESSION['user_id']) {
+        die("Вы можете редактировать только свои задачи!");
+    } //Если менеджер попытается изменить чужую задачу
 } else {
     die("ID задачи не найдено");
 }
@@ -44,10 +52,11 @@ if(isset($_GET['id'])) {
         <label>Название:</label>
         <input type="text" name = "title" value="<?= htmlspecialchars($task['title']) ?>">
         <!-- Поле для того чтобы изменить название задачи -->
+        <input type="text" name = "description" value="<?= htmlspecialchars($task['description']) ?>">
         <label>Статус:</label>
         <select name="status">
         <?php
-        $statuses = ['В процессе', 'Выполнено'];
+        $statuses = ['Новая', 'В процессе', 'Выполнено'];
             foreach ($statuses as $s) {
             $sel = ($task['status'] == $s) ? 'selected' : '';
             echo "<option value='$s' $sel>$s</option>";

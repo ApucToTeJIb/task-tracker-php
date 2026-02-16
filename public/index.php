@@ -27,10 +27,10 @@ $tasksByStatus = [
     'Новая' => [],
     'В процессе' => [],
     'Выполнено' => []
-];
+]; //Кладем в $tasksByStatus 3 пустых колонки
 foreach ($tasks as $task) {
     $tasksByStatus[$task['status']][] = $task;
-}
+} //Сортируем задачи по статусам из task в taskByStatus в соответствующие колонки
 ?>
 
 <!DOCTYPE html>
@@ -55,6 +55,7 @@ foreach ($tasks as $task) {
     <form action="add.php" method="POST" style="margin-bottom: 20px">
         <!-- Для кнопки будет действовать add.php, а метод post чтобы в URL не всплывали вводжимые данные -->
         <input type="text" name="title" placeholder="Что нужно сделать?" required>
+        <input type="text" name="description" placeholder="Описание" required>
         <button type="submit">Добавить задачу</button>
     </form>
 
