@@ -8,6 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { //Подтверждение POST �
     $title = $_POST['title']; //Кладет значение title из POST для execute 
     $description = $_POST['description'];
     $status = $_POST['status']; //Так же
+    $executor_id = !empty($_POST['executor_id']) ? (int)$_POST['executor_id'] : null;
     $user_id = $_SESSION['user_id']; //Так же но из SESSION для подтверждения пользователя
 
     if (empty(trim($title))) {
@@ -31,9 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { //Подтверждение POST �
         die("Вы можете редактировать только свои задачи!");
     }
 
-    $sql = "UPDATE tasks SET title = ?, description = ?, status = ? WHERE id = ?"; //Текст для обращения к бд с просьбой обновления статуса и проверки id
+    $sql = "UPDATE tasks SET title = ?, description = ?, status = ?, executor_id = ? WHERE id = ?"; //Текст для обращения к бд с просьбой обновления статуса и проверки id
     $stmt = $pdo->prepare($sql); //Подготовка
-    $stmt->execute([$title, $description, $status, $id]); //Выполнение
+    $stmt->execute([$title, $description, $status, $executor_id, $id]); //Выполнение
 }
 
 header('Location: index.php'); //Возврат к index.php

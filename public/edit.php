@@ -43,17 +43,18 @@ if (isset($_GET['id'])) { //Получение id задачи которое с
     <title>Редактирование</title>
 </head>
 <body>
-    <h3>Редактирование</h3>
+    <h3>Редактирование задачи</h3>
 
     <form action="update.php" method="POST">
         <!-- Создание блока для редактирования и подтверждения изменений через update.php -->
         <input type="hidden" name="id" value="<?= $task['id'] ?>">
         <!-- Скрытая id для бд для update.php -->
-        <label>Название:</label>
-        <input type="text" name = "title" value="<?= htmlspecialchars($task['title']) ?>">
+        <label>Название:</label><br>
+        <input type="text" name = "title" value="<?= htmlspecialchars($task['title']) ?>"><br>
         <!-- Поле для того чтобы изменить название задачи -->
-        <input type="text" name = "description" value="<?= htmlspecialchars($task['description']) ?>">
-        <label>Статус:</label>
+        <label>Описание:</label><br>
+        <textarea name="description" rows="4" cols="50"><?= htmlspecialchars($taskp['description'] ?? '') ?></textarea><br><br>
+        <label>Статус:</label><br>
         <select name="status">
         <?php
         $statuses = ['Новая', 'В процессе', 'Выполнено'];
@@ -62,10 +63,24 @@ if (isset($_GET['id'])) { //Получение id задачи которое с
             echo "<option value='$s' $sel>$s</option>";
         }
         ?>
-        </select>
+        </select><br><br>
+        <?php
+        $sql = "SELECT id, login, role FROM users WHERE role = 'guest' ORDER BY login";
+        $stmt = $pdo->query($sql);
+        $users = $stmt->fetchAll();
+        ?>
+        <label>Исполнитель:</label><br>
+        <select name = "executor_id">
+            <option value="">-- Не назначен --</option>
+            <?php foreach($users as $u): ?>
+                <option value="<?= $u['id'] ?>" <?= $task['executor_id'] == $u['id'] ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($u['login']) ?> (<?= $u['role'] ?>)
+                </option>
+            <?php endforeach; ?>
+        </select><br><br>
         <!-- Меню с выбором статуса для задачи -->
         <button type="submit">Сохранить</button>
-    </form>
+    </form><br>
     <button type="button" onclick="window.location.href='index.php'">Отмена</button>
 </body>
 </html>
