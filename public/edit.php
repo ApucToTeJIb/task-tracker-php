@@ -41,6 +41,7 @@ if (isset($_GET['id'])) { //Получение id задачи которое с
     <!-- Чтобы на старом Internet Explorer сайт работал нормально -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Редактирование</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <h3>Редактирование задачи</h3>
