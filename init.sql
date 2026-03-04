@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `practice`
+-- База данных: `my_database`
 --
 
 -- --------------------------------------------------------
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `tasks` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'В процессе',
   `user_id` int DEFAULT NULL,
@@ -37,7 +37,8 @@ CREATE TABLE `tasks` (
   `author_id` int DEFAULT NULL,
   `description` text,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
@@ -55,7 +56,7 @@ INSERT INTO `tasks` (`id`, `title`, `status`, `user_id`, `executor_id`, `author_
 --
 
 CREATE TABLE `users` (
-  `id` int NOT NULL,
+  `id` int AUTO_INCREMENT PRIMARY KEY,
   `login` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
   `role` enum('admin','manager','guest') DEFAULT 'guest'
@@ -71,7 +72,6 @@ INSERT INTO `users` (`id`, `login`, `password`, `role`) VALUES
 (6, 'manager2', '$2y$10$kmgteK3LX2pZ5PLTGAOREu9YuvDOtNe6bEzkZloB7TlF5VKoZ.7ES', 'manager'),
 (7, 'guest1', '$2y$10$kmgteK3LX2pZ5PLTGAOREu9YuvDOtNe6bEzkZloB7TlF5VKoZ.7ES', 'guest'),
 (8, 'guest2', '$2y$10$kmgteK3LX2pZ5PLTGAOREu9YuvDOtNe6bEzkZloB7TlF5VKoZ.7ES', 'guest');
-(1, 'admin', '$2y$10$kmgteK3LX2pZ5PLTGAOREu9YuvDOtNe6bEzkZloB7TlF5VKoZ.7ES', 'admin');
 
 --
 -- Индексы сохранённых таблиц
@@ -99,14 +99,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `tasks`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
